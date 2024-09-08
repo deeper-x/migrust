@@ -51,6 +51,30 @@ pub async fn add_migration_record(
     Ok(idx)
 }
 
+pub async fn update_migration_record(
+    client: &Client,
+    migration_info: Migration,
+) -> Result<i64, MyError> {
+    let _stmt = include_str!("./sql/migration/update_record.sql");
+    let stmt = client.prepare(&_stmt).await.unwrap();
+
+    let rows = client
+        .query(
+            &stmt,
+            &[
+                &migration_info.query,
+                &migration_info.id,
+                &migration_info.project_hash,
+            ],
+        )
+        .await
+        .unwrap();
+
+    let idx = rows[0].get(0);
+
+    Ok(idx)
+}
+
 pub async fn get_migration_records(
     client: &Client,
     project_id: String,

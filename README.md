@@ -1,12 +1,21 @@
 # migrust
 
+ ```sql
+CREATE TABLE migrations (
+id BIGSERIAL PRIMARY KEY,
+query TEXT NOT NULL,
+project_hash text,
+ts_created timestamp DEFAULT NOW()
+);
 
+
+ ```
 
 Create migration:
 ```sh
-echo '{"query": "ALTER TABLE x ADD COLUMN a int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
-echo '{"query": "ALTER TABLE y ADD COLUMN b text;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
-echo '{"query": "ALTER TABLE z ADD COLUMN d int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
+echo '{"query": "ALTER TABLE x ADD COLUMN a int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/add
+echo '{"query": "ALTER TABLE y ADD COLUMN b text;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/add
+echo '{"query": "ALTER TABLE z ADD COLUMN d int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/add
 ```
 
 Res:

@@ -49,6 +49,22 @@ pub async fn add_migration_record(
     Ok(HttpResponse::Ok().json(new_migration))
 }
 
+pub async fn update_migration_record(
+    migration: web::Json<models::Migration>,
+    db_pool: web::Data<Pool>,
+) -> Result<HttpResponse, Error> {
+    let migration_info: models::Migration = migration.into_inner();
+
+    let client = db_pool
+        .get()
+        .await
+        .map_err(settings::errors::MyError::PoolError)?;
+
+    let updated_migration = dml::update_migration_record(&client, migration_info).await?;
+
+    Ok(HttpResponse::Ok().json(updated_migration))
+}
+
 pub async fn get_migrations_records(
     db_pool: web::Data<Pool>,
     migr_data: web::Path<(String,)>,
