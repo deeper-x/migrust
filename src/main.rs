@@ -12,7 +12,7 @@ use crate::settings::config::ServerConfig;
 use deadpool_postgres::Pool;
 
 use env_logger;
-
+use server::router;
 mod settings {
     pub mod config;
     pub mod errors;
@@ -51,8 +51,16 @@ async fn main() -> std::io::Result<()> {
             .service(
                 // ping default skeleton
                 web::scope("/ping")
-                    .route("/get", web::get().to(server::router::get_ping_records))
-                    .route("/post", web::post().to(server::router::add_ping_record)),
+                    .route("/get", web::get().to(router::get_ping_records))
+                    .route("/post", web::post().to(router::add_ping_record)),
+            )
+            .service(
+                web::scope("/migration")
+                    .route(
+                        "/get/{project_id}",
+                        web::get().to(router::get_migrations_records),
+                    )
+                    .route("/post", web::post().to(router::add_migration_record)),
             )
     })
     .bind(config.server_addr.clone())?
