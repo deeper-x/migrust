@@ -58,10 +58,10 @@ pub async fn get_migrations_records(
         .await
         .map_err(settings::errors::MyError::PoolError)?;
 
-    let in_migr_data = migr_data.into_inner();
+    let (project_hash,) = migr_data.into_inner();
 
     let migrations: Vec<models::Migration> =
-        dml::get_migration_records(&client, in_migr_data.0).await?;
+        dml::get_migration_records(&client, project_hash).await?;
 
     Ok(HttpResponse::Ok().json(migrations))
 }
