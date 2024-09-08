@@ -3,7 +3,7 @@
 
 
 Create migration:
-```sql
+```sh
 echo '{"query": "ALTER TABLE x ADD COLUMN a int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
 echo '{"query": "ALTER TABLE y ADD COLUMN b text;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
 echo '{"query": "ALTER TABLE z ADD COLUMN d int;", "project_hash": "12345"}' | http -f --json --print hb POST http://127.0.0.1:8080/migration/post
@@ -22,7 +22,7 @@ date: Sun, 08 Sep 2024 10:31:39 GMT
 
 
 Retrieve migrations:
-```
+```sh
 http http://127.0.0.1:8080/migration/get/12345
 
 ```
